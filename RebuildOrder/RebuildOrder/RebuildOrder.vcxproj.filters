@@ -18,11 +18,28 @@
     <ClCompile Include="RebuildOrder.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="client.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="server.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="TDBClient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Stock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TDBClient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="zhelpers.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="zmq.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Stock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

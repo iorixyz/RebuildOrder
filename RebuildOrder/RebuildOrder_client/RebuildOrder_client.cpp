@@ -1,70 +1,60 @@
-﻿// RebuildOrder_client.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-#include "zmq.h"
+﻿#include "zmq.h"
 #include "zmq_utils.h"
-
-
+#include <Windows.h>
+#include <thread>
 #include <iostream>
+#include "zhelpers.hpp"
 
 
 using namespace std;
 
+void parse_quote_msg(zmq::message_t &msg)
+{
+	
+}
+
+void parse_entrust(zmq::message_t &msg)
+{
+	
+}
+
+void net_thread()
+{
+	zmq::context_t context(2);
+
+    zmq::socket_t receiver(context, ZMQ_REQ);
+    receiver.connect("tcp://localhost:5557");
+
+    zmq::socket_t subscriber(context, ZMQ_SUB);
+    subscriber.connect("tcp://localhost:5556");
+    subscriber.setsockopt(ZMQ_SUBSCRIBE, "10001 ", 6);
+
+    zmq::pollitem_t items [] = {
+        { receiver, 0, ZMQ_POLLIN, 0 },
+        { subscriber, 0, ZMQ_POLLIN, 0 }
+    };
+
+	while (true) {
+        zmq::message_t message;
+        zmq::poll (&items [0], 2, -1);
+        
+        if (items [0].revents & ZMQ_POLLIN) {
+            receiver.recv(&message);
+            parse_quote_msg(message);
+        }
+        if (items [1].revents & ZMQ_POLLIN) {
+            subscriber.recv(&message);
+            parse_quote_msg(message);
+        }
+    }
+}
+
 int main()
 {
-   const char *connect_to;
-    int roundtrip_count;
-    size_t message_size;
-    void *ctx;
-    void *s;
-    int rc;
-    int i;
-    zmq_msg_t msg;
+	thread net_t(net_thread);
 
-	connect_to = "127.0.0.1";
-    // message_size = atoi (argv[2]);
-    // roundtrip_count = atoi (argv[3]);
+    net_t.join();
 
-    ctx = zmq_init (1);
-    if (!ctx) {
-        printf ("error in zmq_init: %s\n", zmq_strerror (errno));
-        return -1;
-    }
-
-    s = zmq_socket (ctx, ZMQ_REQ);
-    if (!s) {
-        printf ("error in zmq_socket: %s\n", zmq_strerror (errno));
-        return -1;
-    }
-
-    rc = zmq_connect (s, connect_to);
-    if (rc != 0) {
-        printf ("error in zmq_connect: %s\n", zmq_strerror (errno));
-        return -1;
-    }
-
-    rc = zmq_msg_init_size (&msg, message_size);
-    if (rc != 0) {
-        printf ("error in zmq_msg_init_size: %s\n", zmq_strerror (errno));
-        return -1;
-    }
-    memset (zmq_msg_data (&msg), 0, message_size);
-
-
-    // for (i = 0; i != roundtrip_count; i++) {
-        rc = zmq_send (s, &msg, sizeof(msg), 0);
-        if (rc < 0) {
-            printf ("error in zmq_sendmsg: %s\n", zmq_strerror (errno));
-            return -1;
-        }
-        rc = zmq_recv(s, &msg, sizeof(msg), 0);
-        if (rc < 0) {
-            printf ("error in zmq_recvmsg: %s\n", zmq_strerror (errno));
-            return -1;
-        }
-        if (zmq_msg_size (&msg) != message_size) {
-            printf ("message of incorrect size received\n");
-            return -1;
-        }
-    // }
+    return 0;
 }
 

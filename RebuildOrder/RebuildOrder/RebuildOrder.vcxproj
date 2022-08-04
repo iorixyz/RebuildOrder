@@ -72,6 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <ExternalIncludePath>E:\gaoyu\git\quant\cpp\RebuildOrder\RebuildOrder\include;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -123,20 +124,28 @@
       <ConformanceMode>true</ConformanceMode>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalIncludeDirectories>E:\gaoyu\git\quant\cpp\RebuildOrder\RebuildOrder\RebuildOrder;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\gaoyu\git\quant\cpp\RebuildOrder\RebuildOrder\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>tdbapi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:\gaoyu\git\quant\cpp\RebuildOrder\RebuildOrder\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>tdbapi.lib;libzmq-v143-mt-4_3_5.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RebuildOrder.cpp" />
-    <ClCompile Include="client.cpp" />
     <ClCompile Include="server.cpp" />
+    <ClCompile Include="Stock.cpp" />
+    <ClCompile Include="TDBClient.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Stock.h" />
+    <ClInclude Include="TDBClient.h" />
+    <ClInclude Include="zhelpers.hpp" />
+    <ClInclude Include="zmq.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
